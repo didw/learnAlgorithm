@@ -2,77 +2,57 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
-   private Item[] arr;
-   private int left, right, N;
+   private Node left, right;
+   private int N;
+   private class Node {
+      Item item;
+      Node next, prev;
+      Node(Item _item) { item = _item; next = prev = null; }
+   }
    public Deque() {                           // construct an empty deque
-      arr = (Item[])new Object[4];
-      left = 2;
-      right = 2;
-      N = 4;
+      left = null;
+      right = null;
+      N = 0;
    }
    public boolean isEmpty() {                // is the deque empty?
-      return left == right;
+      return left == null;
    }
    public int size() {                        // return the number of items on the deque
-      return right - left;
-   }
-   private void stretchLeft() {
-      Item[] arr_new = (Item[])new Object[N*2];
-      for (int i = 0; i < N; ++i) {
-         arr_new[i+N] = arr[i];
-      }
-      arr = arr_new;
-      right += N;
-      left += N;
-      N *= 2;
+      return N;
    }
    public void addFirst(Item item) {          // add the item to the front
       if (item == null) throw new NullPointerException("input data is null");
-      arr[left--] = item;
-      if (left == 0) stretchLeft();
-   }
-   private void stretchRight() {
-      Item[] arr_new = (Item[])new Object[N*2];
-      for (int i = 0; i < N; ++i)
-         arr_new[i] = arr[i];
-      arr = arr_new;
-      N *= 2;
+      Node add = new Node(item);
+      if (isEmpty()) {
+         left = right = add;
+      }else {
+         add.next = left;
+         left.prev = add;
+         left = add;
+      }
    }
    public void addLast(Item item) {           // add the item to the end
       if (item == null) throw new NullPointerException("input data is null");
-      arr[right++] = item;
-      if (right == N-1) stretchRight();
-   }
-   private void shortenLeft() {
-      N /= 2;
-      Item[] arr_new = (Item[])new Object[N];
-      for (int i = 0; i < N; ++i) {
-         arr_new[i] = arr[i+N];
+      Node add = new Node(item);
+      if (isEmpty()) {
+         left = right = add;
+      } else {
+         add.prev = right;
+         right.next = add;
+         right = add;
       }
-      arr = arr_new;
-      left -= N;
-      right -= N;
    }
    public Item removeFirst() {               // remove and return the item from the front
       if (isEmpty()) throw new NoSuchElementException("no item");
-      Item ni = arr[left++];
-      if (N > 4 && left > N*3/4) shortenLeft();
-      return ni;
-   }
-   private void shortenRight() {
-      N /= 2;
-      Item[] arr_new = (Item[])new Object[N];
-      for (int i = 0; i < N; ++i) {
-         arr_new[i] = arr[i];
-      }
-      arr = arr_new;
+      Item ret = left.item;
+      left = left.next;
+      return ret;
    }
    public Item removeLast() {                // remove and return the item from the end
       if (isEmpty()) throw new NoSuchElementException("no item");
-      if (isEmpty()) return null;
-      Item ni = arr[right--];
-      if (N>4 && right < N/4) shortenRight();
-      return ni;
+      Item ret = right.item;
+      right = right.prev;
+      return ret;
    }
    @Override
    public Iterator<Item> iterator() {
@@ -82,11 +62,13 @@ public class Deque<Item> implements Iterable<Item> {
    private class DequeIterator implements Iterator<Item> {
       private int current = left;
       public boolean hasNext() {
-         return current != right;
+         return current != null;
       }
       public void remove() { }
       public Item next() {
-         return arr[current++];
+         Item ret = current.item;
+         current = current.next;
+         return ret;
       }
    }
    
