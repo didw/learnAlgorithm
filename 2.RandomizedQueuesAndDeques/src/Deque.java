@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
    private Item[] arr;
@@ -26,6 +27,7 @@ public class Deque<Item> implements Iterable<Item> {
       N *= 2;
    }
    public void addFirst(Item item) {          // add the item to the front
+      if (item == null) throw new NullPointerException("input data is null");
       arr[left--] = item;
       if (left == 0) stretchLeft();
    }
@@ -37,6 +39,7 @@ public class Deque<Item> implements Iterable<Item> {
       N *= 2;
    }
    public void addLast(Item item) {           // add the item to the end
+      if (item == null) throw new NullPointerException("input data is null");
       arr[right++] = item;
       if (right == N-1) stretchRight();
    }
@@ -51,7 +54,7 @@ public class Deque<Item> implements Iterable<Item> {
       right -= N;
    }
    public Item removeFirst() {               // remove and return the item from the front
-      if (isEmpty()) return null;
+      if (isEmpty()) throw new NoSuchElementException("no item");
       Item ni = arr[left++];
       if (N > 4 && left > N*3/4) shortenLeft();
       return ni;
@@ -65,6 +68,7 @@ public class Deque<Item> implements Iterable<Item> {
       arr = arr_new;
    }
    public Item removeLast() {                // remove and return the item from the end
+      if (isEmpty()) throw new NoSuchElementException("no item");
       if (isEmpty()) return null;
       Item ni = arr[right--];
       if (N>4 && right < N/4) shortenRight();
@@ -72,9 +76,20 @@ public class Deque<Item> implements Iterable<Item> {
    }
    @Override
    public Iterator<Item> iterator() {
-      // TODO Auto-generated method stub
-      return null;
+      return new DequeIterator();
    }
+   
+   private class DequeIterator implements Iterator<Item> {
+      private int current = left;
+      public boolean hasNext() {
+         return current != right;
+      }
+      public void remove() { }
+      public Item next() {
+         return arr[current++];
+      }
+   }
+   
 
    public static void main(String[] args) {
       // TODO Auto-generated method stub
