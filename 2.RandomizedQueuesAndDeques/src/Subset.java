@@ -4,7 +4,7 @@ import edu.princeton.cs.algs4.StdOut;
 public class Subset {
 
    public static void main(String[] args) {
-      RandomizedQueue rq = new RandomizedQueue();
+      RandomizedQueue<String> rq = new RandomizedQueue<String>();
       int k = StdIn.readInt();
       while (!StdIn.isEmpty()) {
          String a = StdIn.readString();

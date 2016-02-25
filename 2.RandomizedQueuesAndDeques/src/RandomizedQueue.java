@@ -80,7 +80,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    }
 
    public static void main(String[] args) {
-      RandomizedQueue rq = new RandomizedQueue();
+      RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
       for (int i = 1; i < 10; ++i)
          rq.enqueue(i);
       for (int i = 1; i < 10; ++i)

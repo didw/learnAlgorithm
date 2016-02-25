@@ -17,7 +17,7 @@ public class Deque<Item> implements Iterable<Item> {
       N = 0;
    }
    public boolean isEmpty() {                // is the deque empty?
-      return left == null;
+      return N == 0;
    }
    public int size() {                        // return the number of items on the deque
       return N;
@@ -80,7 +80,7 @@ public class Deque<Item> implements Iterable<Item> {
    
 
    public static void main(String[] args) {
-      Deque dq = new Deque();
+      Deque<Integer> dq = new Deque<Integer>();
       dq.addFirst(1);
       dq.addFirst(2);
       StdOut.print(dq.removeLast());
