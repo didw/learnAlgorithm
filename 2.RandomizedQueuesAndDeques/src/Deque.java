@@ -1,6 +1,8 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import edu.princeton.cs.algs4.StdOut;
+
 public class Deque<Item> implements Iterable<Item> {
    private Node left, right;
    private int N;
@@ -64,7 +66,7 @@ public class Deque<Item> implements Iterable<Item> {
    }
    
    private class DequeIterator implements Iterator<Item> {
-      private int current = left;
+      private Node current = left;
       public boolean hasNext() {
          return current != null;
       }
@@ -78,8 +80,11 @@ public class Deque<Item> implements Iterable<Item> {
    
 
    public static void main(String[] args) {
-      // TODO Auto-generated method stub
-
+      Deque dq = new Deque();
+      dq.addFirst(1);
+      dq.addFirst(2);
+      StdOut.print(dq.removeLast());
+      StdOut.print(dq.removeLast());
    }
 
 }
