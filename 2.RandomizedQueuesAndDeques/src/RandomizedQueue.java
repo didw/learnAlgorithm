@@ -1,4 +1,5 @@
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
@@ -7,8 +8,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    private Item[] arr;
    private int cur, N;
    
+   @SuppressWarnings("unchecked")
    public RandomizedQueue() {                // construct an empty randomized queue
-      arr = (Item[])new Object[4];
+      arr = (Item[]) new Object[4];
       N = 4;
       cur = 0;
    }
@@ -19,7 +21,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       return cur;
    }
    private void increaseSize() {
-      Item[] new_arr = (Item[])new Object[N*2];
+      @SuppressWarnings("unchecked")
+      Item[] new_arr = (Item[]) new Object[N*2];
       for (int i = 0; i < N; ++i)
          new_arr[i] = arr[i];
       arr = new_arr;
@@ -28,7 +31,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    public void enqueue(Item item) {          // add the item
       arr[cur] = item;
       cur++;
-      if (cur==N) {
+      if (cur == N) {
           increaseSize();
       }
       int k = StdRandom.uniform(cur);
@@ -41,13 +44,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    }
    private void decreaseSize() {
       N /= 2;
-      Item[] new_arr = (Item[])new Object[N];
+      @SuppressWarnings("unchecked")
+      Item[] new_arr = (Item[]) new Object[N];
       for (int i = 0; i < N/2; ++i)
          new_arr[i] = arr[i];
       arr = new_arr;
    }
    public Item dequeue() {                   // remove and return a random item
-      if (cur == 0) return null;
+      if (cur == 0) throw new NoSuchElementException("no item");;
       Item ret = arr[--cur];
       if (cur > 4 && cur < N/4) decreaseSize();
       return ret;
@@ -75,6 +79,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       }
       public void remove() { }
       public Item next() {
+         if (!hasNext()) throw new NoSuchElementException("no item");
          return ar[current++];
       }
    }

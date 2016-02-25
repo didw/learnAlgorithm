@@ -7,9 +7,13 @@ public class Deque<Item> implements Iterable<Item> {
    private Node left, right;
    private int N;
    private class Node {
-      Item item;
-      Node next, prev;
-      Node(Item _item) { item = _item; next = prev = null; }
+      private Item item;
+      private Node next, prev;
+      Node(Item itemIn) { 
+         item = itemIn; 
+         next = null; 
+         prev = null; 
+       }
    }
    public Deque() {                           // construct an empty deque
       left = null;
@@ -17,7 +21,7 @@ public class Deque<Item> implements Iterable<Item> {
       N = 0;
    }
    public boolean isEmpty() {                // is the deque empty?
-      return N == 0;
+      return left == null;
    }
    public int size() {                        // return the number of items on the deque
       return N;
@@ -27,7 +31,7 @@ public class Deque<Item> implements Iterable<Item> {
       Node add = new Node(item);
       if (isEmpty()) {
          left = right = add;
-      }else {
+      } else {
          add.next = left;
          left.prev = add;
          left = add;
@@ -38,7 +42,8 @@ public class Deque<Item> implements Iterable<Item> {
       if (item == null) throw new NullPointerException("input data is null");
       Node add = new Node(item);
       if (isEmpty()) {
-         left = right = add;
+         left = add;
+         right = add;
       } else {
          add.prev = right;
          right.next = add;
@@ -49,14 +54,18 @@ public class Deque<Item> implements Iterable<Item> {
    public Item removeFirst() {               // remove and return the item from the front
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = left.item;
+      left.next.prev = null;
       left = left.next;
+      left.prev = null;
       N--;
       return ret;
    }
    public Item removeLast() {                // remove and return the item from the end
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = right.item;
+      right.prev.next = null;
       right = right.prev;
+      right.next = null;
       N--;
       return ret;
    }
