@@ -30,7 +30,8 @@ public class Deque<Item> implements Iterable<Item> {
       if (item == null) throw new NullPointerException("input data is null");
       Node add = new Node(item);
       if (isEmpty()) {
-         left = right = add;
+         left = add;
+         right = add;
       } else {
          add.next = left;
          left.prev = add;
@@ -54,18 +55,18 @@ public class Deque<Item> implements Iterable<Item> {
    public Item removeFirst() {               // remove and return the item from the front
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = left.item;
-      left.next.prev = null;
       left = left.next;
-      left.prev = null;
+      if (left != null)
+         left.prev = null;
       N--;
       return ret;
    }
    public Item removeLast() {                // remove and return the item from the end
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = right.item;
-      right.prev.next = null;
       right = right.prev;
-      right.next = null;
+      if (right != null)
+         right.next = null;
       N--;
       return ret;
    }
@@ -79,8 +80,12 @@ public class Deque<Item> implements Iterable<Item> {
       public boolean hasNext() {
          return current != null;
       }
-      public void remove() { }
+      public void remove() {
+         throw new UnsupportedOperationException("remove is not supported");
+      }
       public Item next() {
+         if (!hasNext())
+            throw new NoSuchElementException("no item");
          Item ret = current.item;
          current = current.next;
          return ret;
@@ -90,10 +95,10 @@ public class Deque<Item> implements Iterable<Item> {
 
    public static void main(String[] args) {
       Deque<Integer> dq = new Deque<Integer>();
+      StdOut.println(dq.isEmpty());
       dq.addFirst(1);
       dq.addFirst(2);
-      StdOut.print(dq.removeLast());
-      StdOut.print(dq.removeLast());
+      StdOut.println(dq.removeFirst());
+      StdOut.println(dq.removeFirst());
    }
-
 }

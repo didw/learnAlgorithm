@@ -8,7 +8,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    private Item[] arr;
    private int cur, N;
    
-   @SuppressWarnings("unchecked")
    public RandomizedQueue() {                // construct an empty randomized queue
       arr = (Item[]) new Object[4];
       N = 4;
@@ -21,7 +20,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       return cur;
    }
    private void increaseSize() {
-      @SuppressWarnings("unchecked")
       Item[] new_arr = (Item[]) new Object[N*2];
       for (int i = 0; i < N; ++i)
          new_arr[i] = arr[i];
@@ -44,14 +42,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    }
    private void decreaseSize() {
       N /= 2;
-      @SuppressWarnings("unchecked")
       Item[] new_arr = (Item[]) new Object[N];
       for (int i = 0; i < N/2; ++i)
          new_arr[i] = arr[i];
       arr = new_arr;
    }
    public Item dequeue() {                   // remove and return a random item
-      if (cur == 0) throw new NoSuchElementException("no item");;
+      if (cur == 0) throw new NoSuchElementException("no item");
       Item ret = arr[--cur];
       if (cur > 4 && cur < N/4) decreaseSize();
       return ret;
@@ -77,7 +74,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       public boolean hasNext() {
          return current != cur;
       }
-      public void remove() { }
+      public void remove() {
+         throw new UnsupportedOperationException("remove is not supported");
+      }
       public Item next() {
          if (!hasNext()) throw new NoSuchElementException("no item");
          return ar[current++];
