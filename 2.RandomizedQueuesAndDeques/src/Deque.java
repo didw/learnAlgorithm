@@ -56,7 +56,9 @@ public class Deque<Item> implements Iterable<Item> {
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = left.item;
       left = left.next;
-      if (left != null)
+      if (left == null)
+         right = null;
+      else
          left.prev = null;
       N--;
       return ret;
@@ -65,7 +67,9 @@ public class Deque<Item> implements Iterable<Item> {
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = right.item;
       right = right.prev;
-      if (right != null)
+      if (right == null)
+         left = null;
+      else
          right.next = null;
       N--;
       return ret;
