@@ -30,6 +30,7 @@ public class Deque<Item> implements Iterable<Item> {
          left.prev = add;
          left = add;
       }
+      N++;
    }
    public void addLast(Item item) {           // add the item to the end
       if (item == null) throw new NullPointerException("input data is null");
@@ -41,17 +42,20 @@ public class Deque<Item> implements Iterable<Item> {
          right.next = add;
          right = add;
       }
+      N++;
    }
    public Item removeFirst() {               // remove and return the item from the front
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = left.item;
       left = left.next;
+      N--;
       return ret;
    }
    public Item removeLast() {                // remove and return the item from the end
       if (isEmpty()) throw new NoSuchElementException("no item");
       Item ret = right.item;
       right = right.prev;
+      N--;
       return ret;
    }
    @Override
