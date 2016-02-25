@@ -54,12 +54,20 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    }
    private class RandomizedQueueIterator implements Iterator<Item> {
       private int current = 0;
+      private Item[] ar;
+      RandomizedQueueIterator() {
+         ar = arr;
+         for (int i = 0; i < cur; ++i) {
+            int k = StdRandom.uniform(i);
+            swap(ar, k, i);
+         }
+      }
       public boolean hasNext() {
          return current != cur;
       }
       public void remove() { }
       public Item next() {
-         return arr[current++];
+         return ar[current++];
       }
    }
 
