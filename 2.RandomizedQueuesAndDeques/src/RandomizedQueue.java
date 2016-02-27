@@ -54,6 +54,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       return ret;
    }
    public Item sample() {                    // return (but do not remove) a random item
+      if (cur == 0) throw new NoSuchElementException("no item");
       int k = StdRandom.uniform(cur);
       return arr[k]; 
    }
@@ -87,6 +88,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
       for (int i = 1; i < 10; ++i)
          rq.enqueue(i);
+      Iterator<Integer> it = new rq.iterator();
       for (int i = 1; i < 10; ++i)
          StdOut.println(rq.dequeue());
    }
