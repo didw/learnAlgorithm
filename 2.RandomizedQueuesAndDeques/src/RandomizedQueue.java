@@ -27,13 +27,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       N *= 2;
    }
    public void enqueue(Item item) {          // add the item
+      if (item == null) throw new NullPointerException("input is null");
       arr[cur] = item;
       cur++;
       if (cur == N) {
           increaseSize();
       }
-      int k = StdRandom.uniform(cur);
-      exch(arr, k, cur-1);
    }
    private void exch(Item[] a, int i, int j) {
       Item tmp = a[i];
@@ -49,7 +48,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
    }
    public Item dequeue() {                   // remove and return a random item
       if (cur == 0) throw new NoSuchElementException("no item");
-      Item ret = arr[--cur];
+      int k = StdRandom.uniform(cur);
+      Item ret = arr[k];
+      arr[k] = arr[--cur];
+      arr[cur] = null;
       if (cur > 4 && cur < N/4) decreaseSize();
       return ret;
    }
@@ -63,34 +65,41 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       return new RandomizedQueueIterator();
    }
    private class RandomizedQueueIterator implements Iterator<Item> {
-      private int current = 0;
+      private int current = cur;
       private Item[] ar;
       RandomizedQueueIterator() {
-         ar = arr;
-         for (int i = 0; i < cur; ++i) {
-            int k = StdRandom.uniform(i+1);
-            exch(ar, k, i);
-         }
+         ar = (Item[]) new Object[cur];
+         for (int i = 0; i < cur; ++i)
+            ar[i] = arr[i];
       }
       public boolean hasNext() {
-         return current != cur;
+         return current != 0;
       }
       public void remove() {
          throw new UnsupportedOperationException("remove is not supported");
       }
       public Item next() {
          if (!hasNext()) throw new NoSuchElementException("no item");
-         return ar[current++];
+         int k = StdRandom.uniform(current);
+         Item ret = ar[k];
+         ar[k] = ar[--current];
+         ar[current] = null;
+         return ret;
       }
    }
 
    public static void main(String[] args) {
       RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
+      rq.enqueue(1);
+      StdOut.print(rq.dequeue());
       for (int i = 1; i < 10; ++i)
          rq.enqueue(i);
       Iterator<Integer> it = rq.iterator();
       while (it.hasNext())
-         StdOut.println(it.next());
+         StdOut.print(it.next());
+      StdOut.println();
+      for (int i = 1; i < 10; ++i)
+         StdOut.print(rq.dequeue()); 
    }
 
 }
