@@ -68,7 +68,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       RandomizedQueueIterator() {
          ar = arr;
          for (int i = 0; i < cur; ++i) {
-            int k = StdRandom.uniform(i);
+            int k = StdRandom.uniform(i+1);
             exch(ar, k, i);
          }
       }
@@ -88,9 +88,9 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
       for (int i = 1; i < 10; ++i)
          rq.enqueue(i);
-      Iterator<Integer> it = new rq.iterator();
-      for (int i = 1; i < 10; ++i)
-         StdOut.println(rq.dequeue());
+      Iterator<Integer> it = rq.iterator();
+      while (it.hasNext())
+         StdOut.println(it.next());
    }
 
 }
