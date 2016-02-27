@@ -96,9 +96,9 @@ public class Deque<Item> implements Iterable<Item> {
    public static void main(String[] args) {
       Deque<Integer> dq = new Deque<Integer>();
       StdOut.println(dq.isEmpty());
-      dq.addFirst(1);
+      dq.addFirst(0);
+      StdOut.println(dq.removeLast());
       dq.addFirst(2);
-      StdOut.println(dq.removeFirst());
-      StdOut.println(dq.removeFirst());
+      StdOut.println(dq.removeLast());
    }
 }
