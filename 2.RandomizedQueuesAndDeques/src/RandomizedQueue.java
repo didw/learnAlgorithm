@@ -88,9 +88,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
       RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
       for (int i = 1; i < 10; ++i)
          rq.enqueue(i);
-      Iterator<Integer> it = rq.iterator();
-      while (it.hasNext())
-         StdOut.println(it.next());
+      for (int i = 0; i < 10; ++i) {
+         Iterator<Integer> it = rq.iterator();
+         while (it.hasNext())
+            StdOut.print(it.next());
+         StdOut.println();
+      }
    }
 
 }
